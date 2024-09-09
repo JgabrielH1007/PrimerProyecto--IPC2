@@ -2,16 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Backend.Exceptions;
+package Backend.DataBase;
 
 /**
  *
  * @author gabrielh
  */
-public class UserDataException extends Exception{
-
-    public UserDataException(String message) {
-        super(message);
-    }
+public class DBRevistas {
     
 }

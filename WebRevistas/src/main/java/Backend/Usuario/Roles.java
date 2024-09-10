@@ -10,7 +10,7 @@ package Backend.Usuario;
  */
 public enum Roles {
         ADMINISTRADOR,
-        AUTOR,
+        EDITOR,
         SUSCRIPTOR,
-        ANUNCIADOR;
+        PULICIDAD;
 }

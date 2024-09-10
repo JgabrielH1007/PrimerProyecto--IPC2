@@ -12,7 +12,7 @@ public class Usuario {
     
     private String userName;
     private String password;
-    private String rol;
+    private Roles rol;
     private float cartera;
 
     public Usuario() {
@@ -34,11 +34,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getRol() {
+    public Roles getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(Roles rol) {
         this.rol = rol;
     }
 

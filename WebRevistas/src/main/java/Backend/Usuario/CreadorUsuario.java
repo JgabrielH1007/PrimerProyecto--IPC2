@@ -14,22 +14,31 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 public class CreadorUsuario {
     private DBRevistas db = new DBRevistas();
+    private AdministradorPassword admin = new AdministradorPassword();
 
    public Usuario crearUsuario(HttpServletRequest req) throws UserDataException {
         Usuario newUser = validarLogin(req);
+        try{
+        if(db.usuarioExistente(newUser.getUserName())){
+            throw new UserDataException("UserName ya existe!");
+        }
+        newUser.setPassword(admin.hashPassword(newUser.getPassword()));
+        db.guardarUsuario(newUser);
         
         return newUser;
+        }finally {
+            db.close(); // Asegurar que la conexión se cierra
+        }
     }
     
     private Usuario validarLogin(HttpServletRequest req) throws UserDataException{
         Usuario newUser = new Usuario();
         try {
             newUser.setUserName(req.getParameter("userName"));
-           //newUser.setRol(Roles.valueOf(req.getParameter("rol")));
             newUser.setPassword(req.getParameter("password"));
-           //newUser.setCartera(Float.parseFloat(req.getParameter("credito")));
-        } catch (IllegalArgumentException
-                | NullPointerException e) {
+            newUser.setRol(Roles.valueOf(req.getParameter("rol")));           
+            newUser.setCartera(Float.parseFloat(req.getParameter("cartera")));
+        } catch (NullPointerException e) {
             throw new UserDataException("Error en los datos enviados");
         }
         

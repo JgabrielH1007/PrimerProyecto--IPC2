@@ -17,7 +17,7 @@ public class AdministradorPassword {
         return BCrypt.hashpw(password, BCrypt.gensalt(12)); 
     }
     
-     public boolean checkPassword(String password, String hashedPassword) {
+    public boolean checkPassword(String password, String hashedPassword) {
         return BCrypt.checkpw(password, hashedPassword);
     }
     

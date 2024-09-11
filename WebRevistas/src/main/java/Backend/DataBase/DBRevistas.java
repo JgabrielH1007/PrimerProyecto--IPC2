@@ -4,10 +4,12 @@
  */
 package Backend.DataBase;
 
+import Backend.Usuario.AdministradorPassword;
 import Backend.Usuario.Usuario;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -20,6 +22,8 @@ public class DBRevistas {
     private static final String PASSWORD = "1007";
     
     private Connection connection;
+    private AdministradorPassword admin = new AdministradorPassword();
+
 
     public DBRevistas()  {
       try {
@@ -47,12 +51,50 @@ public class DBRevistas {
         }
     }
     
-    public boolean usuarioExistente(String userName){
+        public boolean usuarioExistente(String userName) {
+        String sql = "SELECT COUNT(*) FROM usuario WHERE user_name = ?";
         
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userName);
+            
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Si el conteo es mayor que 0, el usuario existe
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
     
+    public boolean verificarUsuario(String userName, String password) {
+        String sql = "SELECT password FROM usuario WHERE BINARY user_name = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userName);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Obtiene la contraseña hasheada almacenada en la base de datos
+                    String hashedPassword = resultSet.getString("password");
+
+                    // Compara la contraseña ingresada con la hasheada
+                    return admin.checkPassword(password, hashedPassword);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    
     public void guardarUsuario(Usuario user){
+        user.setPassword(admin.hashPassword(user.getPassword()));
         String sql = "INSERT INTO usuario (user_name, password, rol, cartera) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -71,6 +113,10 @@ public class DBRevistas {
             e.printStackTrace();
             // Manejar la excepción según sea necesario, lanzar una nueva o loggear el error.
         }
+    }
+    
+    public void verificarUsuario(){
+        
     }
     
     

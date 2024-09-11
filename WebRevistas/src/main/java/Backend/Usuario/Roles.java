@@ -12,5 +12,5 @@ public enum Roles {
         ADMINISTRADOR,
         EDITOR,
         SUSCRIPTOR,
-        PULICIDAD;
+        PUBLICIDAD;
 }

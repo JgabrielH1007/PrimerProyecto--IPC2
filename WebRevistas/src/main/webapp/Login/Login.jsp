@@ -34,7 +34,7 @@
     <body>
         <main class="form-signin w-100 m-auto text-center">
             <section class="container mt-5">
-                <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+                <h1 class="h3 mb-3 fw-normal">INGRESAR</h1>
 
                 <!-- Mostrar mensaje de error si existe -->
                 <c:if test="${not empty error}">

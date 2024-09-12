@@ -14,7 +14,8 @@
 
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+Z0I5q1iZn7fDaWfhp8Psr4lgv0g" crossorigin="anonymous">
-        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
         <style>
             body, html {
                 height: 100%;
@@ -35,12 +36,20 @@
                 border-radius: 10px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
+            .icono-ingresar {
+            font-size: 4rem;
+            color: #2F4F4F; /* Puedes ajustar el color */
+            }
         </style>
     </head>
     <body>
         <main class="form-container">
             <section class="form-box">
                 <div class="container">
+                    <div class="d-flex justify-content-center">
+                        <i class="bi bi-person-fill icono-ingresar mb-3" style="font-size: 3rem;"></i>
+                    </div>
+
                     <h1 class="text-center mb-4">Crear Nuevo Usuario</h1>
 
                     <!-- Mostrar mensaje de error si existe -->
@@ -87,9 +96,7 @@
                 </div>
             </section>
         </main>
-
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+Z0I5q1iZn7fDaWfhp8Psr4lgv0g" crossorigin="anonymous"></script>
+        <jsp:include page="/includes/footer.jsp"/>
     </body>
 </html>
 

@@ -37,9 +37,57 @@
             font-size: 4rem;
             color: #2F4F4F; /* Puedes ajustar el color */
           }
+          .sidebar {
+            background-color: #f4f4f4;
+            padding: 15px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            height: 100vh; /* Altura completa */
+            position: relative;
+        }
+        .left-sidebar {
+            width: 20%;
+        }
+        .right-sidebar {
+            width: 20%;
+        }
+        .main-content {
+            width: 60%; /* Resto del espacio */
+        }
+        .layout-container {
+            display: flex;
+            margin-top: 56px; /* Ajusta según la altura del header */
+        }
+        .form-box, .active-ads-box {
+            flex: 1;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-right: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+        .active-ads-box {
+            margin-left: 10px;
+        }
+        .price-table {
+            margin-top: 20px;
+        }
+        .price-table th, .price-table td {
+            padding: 12px;
+            text-align: center;
+        }
+        .form-box h3, .active-ads-box h3 {
+            margin-bottom: 20px;
+            font-weight: 600;
+        }  
         </style>
     </head>
     <body>
+        
+        <div class="layout-container container-fluid">
+        <!-- Incluye la barra lateral izquierda -->
+        <jsp:include page="/includes/leftSide.jsp"/>
         <main class="form-signin w-100 m-auto text-center">
             <section class="container mt-5">
                 
@@ -80,9 +128,11 @@
                     <br>
                     <input type="submit" class=" w-100 btn btn-outline-secondary " value="Crear Cuenta">
                 </form>
-
+                        
             </section>
         </main>
+    <jsp:include page="/includes/rightSide.jsp"/>
+    </div>
 
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+Z0I5q1iZn7fDaWfhp8Psr4lgv0g" crossorigin="anonymous"></script>

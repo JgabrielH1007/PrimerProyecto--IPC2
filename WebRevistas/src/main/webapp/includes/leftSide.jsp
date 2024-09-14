@@ -6,10 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<!-- Barra lateral izquierda -->
 <div class="sidebar left-sidebar">
     <h2>Barra Lateral Izquierda</h2>
-    <!-- Contenido opcional -->
     <div id="text-content" class="content-item" style="display: none;">
         <p>Este es un ejemplo de texto en la barra lateral izquierda.</p>
     </div>

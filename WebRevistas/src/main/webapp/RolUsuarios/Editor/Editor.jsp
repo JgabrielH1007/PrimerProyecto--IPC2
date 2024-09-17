@@ -26,34 +26,59 @@
                 <section class="form-container">
                     <div class="form-box">
                         <h3>Publicar revista: </h3>
-                        <form method="POST" action="${pageContext.servletContext.contextPath}/Controllers/Revista/revista-servlet">
+                        <form method="POST" action="${pageContext.servletContext.contextPath}/Controllers/Revista/revista-servlet" enctype="multipart/form-data">
                             <div class="form-group mb-3">
-                                <label for = "nombre">Nombre de la revista: </label>
+                                <label for="nombre">Nombre de la revista: </label>
                                 <input id="nombre" name="nombre" maxlength="20" class="form-control" placeholder="Nombre revista" required>
                             </div>
-                            
+
                             <div class="form-group mb-3">
-                                <label for = "descripcion">Descripcion de la revista: </label>
-                                <input id="descripcion" name="descripcion" maxlength="200" class="form-control" placeholder="Descripcion revista" required>
+                                <label for="descripcion">Descripción de la revista: </label>
+                                <input id="descripcion" name="descripcion" maxlength="200" class="form-control" placeholder="Descripción revista" required>
                             </div>
-                            
+
                             <div class="form-group mb-3">
-                                <label for="tipo" class="form-label">Seleccione tipo de anuncio:</label>
-                                <select id="tipo" name="tipo" class="form-select" required>
-                                    <option value="TEXTO">TEXTO</option>
-                                    <option value="TEXTOEIMAGEN">TEXTO E IMAGEN</option>
-                                    <option value="VIDEO">VIDEO</option>
+                                <label for="categoria" class="form-label">Seleccione categoría:</label>
+                                <select id="categoria" name="categoria" class="form-select" required>
+                                    <jsp:include page="/includes/category.jsp"/>
                                 </select>
                             </div>
-                            
-                            
-                            
+
+                            <div class="form-group mb-3">
+                                <label>Etiquetas:</label>
+                                <jsp:include page = "/includes/tags.jsp"/>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="fecha-publicacion">Fecha de publicación:</label>
+                                <input type="date" id="fecha-publicacion" name="fecha-publicacion" class="form-control" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="comentarios">Permitir comentarios:</label>
+                                <input type="checkbox" id="comentarios" name="comentarios" value="true">
+                                <label for="comentarios">Sí, permitir comentarios</label>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="me_gusta">Permitir "Me gusta":</label>
+                                <input type="checkbox" id="me_gusta" name="me_gusta" value="true">
+                                <label for="me_gusta">Sí, permitir "Me gusta"</label>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="pdf">Subir archivo PDF (opcional):</label>
+                                <input type="file" id="pdf" name="pdf" class="form-control" accept=".pdf">
+                            </div>
+
                             <button type="submit" class="btn btn-primary mt-3">Asignar</button>
                         </form>
+
+
                         <br>   
                         <br>
                         <div>
-                            <h3>Costos revistas:</h3>
+                            <h3>Subir capitulo revista:</h3>
                             <form method="GET" action="${pageContext.servletContext.contextPath}/Controllers/revistas/ver_revistas">
                                 <label for="revista" class="form-label">Seleccione revista:</label>
                                 <select id="revista" name="revista" class="form-select" required>
@@ -63,10 +88,10 @@
                                 </select>
 
                                 <div class="form-group mb-3">
-                                    <label for="costo">Colocar costo</label>
-                                    <input id="costo" name="costo" type="number" min="1" class="form-control" required>
+                                    <label for="pdf">Subir archivo PDF (opcional):</label>
+                                    <input type="file" id="pdf" name="pdf" class="form-control" accept=".pdf">
                                 </div>
-                                <button type="submit" class="btn btn-primary mt-3">Asignar</button>
+                                <button type="submit" class="btn btn-primary mt-3">Subir</button>
                             </form>
                         </div>
                         <br>
@@ -76,11 +101,44 @@
                             <form method="GET" action="${pageContext.servletContext.contextPath}/Controllers/Anuncios/ver-activos">
                                 <label for="reportes" class="form-label">Seleccione el reporte que desee ver:</label>
                                 <select id="reporte" name="reporte" class="form-select" required>
-                                    <option value="GANANCIAS">REPORTE DE GANANCIAS</option>
-                                    <option value="ANUNCIOS">REPORTE DE ANUNCIOS</option>
-                                    <option value="POPULARREVISTAS">REPORTE 5 REVISTAS MAS POPULARES</option>
-                                    <option value="COMENTARIOREVISTAS">REPORTE 5 REVISTAS MAS COMENTADAS</option>
+                                    <option value="COMENTARIOS">REPORTE DE COMENTARIOS</option>
+                                    <option value="SUSCRIPCIONES">REPORTE DE SUSCRIPCIONES</option>
+                                    <option value="MEGUSTAS">REPORTE 5 REVISTAS MAS GUSTADAS</option>
                                 </select>
+                                <br>
+                                
+                                
+                                <button type="submit" class="btn btn-primary mt-3">Visualizar reporte</button>
+                            </form>          
+                        </div>
+                        <br>
+                        <br>
+                        <div>
+                            <h3>Habilitar comentarios, me gustas y suscripciones:</h3>
+                            <form method="GET" action="${pageContext.servletContext.contextPath}/Controllers/Anuncios/ver-activos">
+                                <label for="revista" class="form-label">Seleccione revista:</label>
+                                <select id="revista" name="revista" class="form-select" required>
+                                    <c:forEach var="revista" items="${revistas}">
+                                        <option value="${revista}">${revista}</option>
+                                    </c:forEach>
+                                </select>
+                                <br>
+                                <div class="form-group mb-3">
+                                    <label for="comentarios">Permitir comentarios:</label>
+                                    <input type="checkbox" id="comentarios" name="comentarios" value="true">
+                                    <label for="comentarios">Si</label>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="me_gusta">Permitir "Me gusta":</label>
+                                    <input type="checkbox" id="me_gusta" name="me_gusta" value="true">
+                                    <label for="me_gusta">Si</label>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="suscripciones">Permitir suscripciones:</label>
+                                    <input type="checkbox" id="suscripciones" name="suscripciones" value="true">
+                                    <label for="suscripciones">Si</label>
+                                </div>
                                 <br>
                                 <button type="submit" class="btn btn-primary mt-3">Visualizar reporte</button>
                             </form>          

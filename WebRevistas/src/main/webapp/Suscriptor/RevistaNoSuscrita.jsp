@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Suscriptor
-    Created on : 11 sept 2024, 3:02:21
+    Document   : RevistaNoSuscrita
+    Created on : 16 sept 2024, 23:46:52
     Author     : gabrielh
 --%>
 
@@ -9,9 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>NO SUSCRITO</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1></h1>
     </body>
 </html>

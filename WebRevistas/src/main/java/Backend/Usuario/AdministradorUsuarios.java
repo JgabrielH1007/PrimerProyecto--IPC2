@@ -20,16 +20,14 @@ public class AdministradorUsuarios {
     public Usuario crearUsuario(HttpServletRequest req) throws UserDataException {
         Usuario newUser = validarDatos(req);
         
-        try {
+        
             if (db.usuarioExistente(newUser.getUserName())) {
                 exist = true;
                 throw new UserDataException("¡El nombre de usuario ya existe!");
             }
             db.guardarUsuario(newUser);
             return newUser;
-        } finally {
-            db.close(); // Asegurar que la conexión se cierra
-        }
+        
     }
 
     // Login de usuario
@@ -54,4 +52,10 @@ public class AdministradorUsuarios {
         }
         throw new UserDataException("Error en los datos enviados");
     }
+    
+    public Usuario obtenerUsuario(String userName) {
+        return db.obtenerUsuarioPorNombre(userName);  // Suponiendo que tienes este método en DBRevistas
+    }
+
+    
 }

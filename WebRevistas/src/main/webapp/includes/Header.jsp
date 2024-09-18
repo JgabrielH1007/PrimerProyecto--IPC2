@@ -41,6 +41,7 @@
     </head>
     <body>
         <!-- Header -->
+        
         <nav class="navbar navbar-expand-lg navbar-custom">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">REVISTAS</a>
@@ -49,8 +50,8 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <div class="ms-auto"> <!-- Alineación a la derecha -->
-                        <button class="btn btn-custom" type="button">Perfil</button>
-                        <button class="btn btn-custom" type="button">Cerrar Sesión</button>
+                        <li class="nav-item"><button class="btn btn-custom" type="button">Perfil</button></li>
+                        <li class="nav-item"><a class="btn btn-custom" href="${pageContext.servletContext.contextPath}/Controllers/Usuario/cerrarSesion-servlet">Cerrar Sesión</a></li>
                     </div>
                 </div>
             </div>

@@ -25,8 +25,16 @@
             <main class="main-content">
                 <section class="form-container">
                     <div class="form-box">
+                        <%-- Mostrar el mensaje de éxito --%>
+                        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+                        <c:if test="${not empty mensaje}">
+                            <div class="alert alert-success" role="alert">
+                                ${mensaje}
+                            </div>
+                        </c:if>
+
                         <h3>Publicar revista: </h3>
-                        <form method="POST" action="${pageContext.servletContext.contextPath}/Controllers/Revista/revista-servlet" enctype="multipart/form-data">
+                        <form method="POST" action="${pageContext.servletContext.contextPath}/Controllers/Revista/revista-servlet">
                             <div class="form-group mb-3">
                                 <label for="nombre">Nombre de la revista: </label>
                                 <input id="nombre" name="nombre" maxlength="20" class="form-control" placeholder="Nombre revista" required>
@@ -39,7 +47,7 @@
 
                             <div class="form-group mb-3">
                                 <label for="categoria" class="form-label">Seleccione categoría:</label>
-                                <select id="categoria" name="categoria" class="form-select" required>
+                                <select id="categoria" name="categoria" class="form-control" required>
                                     <jsp:include page="/includes/category.jsp"/>
                                 </select>
                             </div>
@@ -66,10 +74,6 @@
                                 <label for="me_gusta">Sí, permitir "Me gusta"</label>
                             </div>
 
-                            <div class="form-group mb-3">
-                                <label for="pdf">Subir archivo PDF (opcional):</label>
-                                <input type="file" id="pdf" name="pdf" class="form-control" accept=".pdf">
-                            </div>
 
                             <button type="submit" class="btn btn-primary mt-3">Asignar</button>
                         </form>
@@ -77,23 +81,25 @@
 
                         <br>   
                         <br>
-                        <div>
-                            <h3>Subir capitulo revista:</h3>
-                            <form method="GET" action="${pageContext.servletContext.contextPath}/Controllers/revistas/ver_revistas">
-                                <label for="revista" class="form-label">Seleccione revista:</label>
-                                <select id="revista" name="revista" class="form-select" required>
-                                    <c:forEach var="revista" items="${revistas}">
-                                        <option value="${revista}">${revista}</option>
-                                    </c:forEach>
-                                </select>
+                                <div>
+                                    <h3>Subir capítulo revista:</h3>
+                                    <form method="POST" action="${pageContext.servletContext.contextPath}/Controllers/revistas/ver_revistas" enctype="multipart/form-data">
+                                        <label for="revista" class="form-label">Seleccione revista:</label>
+                                        <select id="revista" name="revista" class="form-select" required>
+                                            <c:forEach var="revista" items="${revistas}">
+                                                <option value="${revista}">${revista}</option>
+                                            </c:forEach>
+                                        </select>
 
-                                <div class="form-group mb-3">
-                                    <label for="pdf">Subir archivo PDF (opcional):</label>
-                                    <input type="file" id="pdf" name="pdf" class="form-control" accept=".pdf">
+                                        <div class="form-group mb-3">
+                                            <label for="pdf">Subir archivo PDF (opcional):</label>
+                                            <input type="file" id="pdf" name="pdf" class="form-control" accept=".pdf">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mt-3">Subir</button>
+                                    </form>
+
                                 </div>
-                                <button type="submit" class="btn btn-primary mt-3">Subir</button>
-                            </form>
-                        </div>
+
                         <br>
                         <br>
                         <div>

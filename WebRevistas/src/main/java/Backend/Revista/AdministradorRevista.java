@@ -5,6 +5,7 @@
 package Backend.Revista;
 
 import Backend.DataBase.DBRevistas;
+import Backend.Exceptions.UserDataException;
 import Backend.Usuario.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,13 +24,11 @@ import java.util.List;
  */
 public class AdministradorRevista {
     private DBRevistas db = new DBRevistas();
-    
-    
-    
+       
     public void publicarRevista(HttpServletRequest request)
-            throws ServletException, IOException, java.text.ParseException {
+            throws ServletException, IOException, java.text.ParseException, UserDataException {
         
-
+        
         // Obtener la sesión actual
         HttpSession session = request.getSession(false);  // false significa que no creará una nueva sesión si no existe
         Usuario usuario = (Usuario) session.getAttribute("usuario");  // Extraer el objeto Usuario de la sesión
@@ -67,11 +66,15 @@ public class AdministradorRevista {
 
         // Establecer el autor de la revista usando el nombre de usuario desde la sesión
         revista.setAutor(userName);
-
+        verificarRevistaExistente(revista.getNombre(), db);
         // Guardar la revista en la base de datos
         db.guardarRevista(revista);  // Suponiendo que tienes este método en DBRevistas
 
-        // Redirigir a una página de confirmación o mostrar un mensaje de éxito
-        request.setAttribute("mensaje", "Revista publicada exitosamente");
+    }
+    
+    public void verificarRevistaExistente(String nombreRevista, DBRevistas db) throws UserDataException{
+        if(db.revistaExiste(nombreRevista)){
+            throw new UserDataException("¡El nombre de usuario ya existe!");
+        }
     }
 }

@@ -9,6 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <title>EDITOR</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-kenU1KFdBIe4zVF0sG1M5b4hcpxyD9F7jL+Z0I5q1iZn7fDaWfhp8Psr4lgv0g" crossorigin="anonymous">
         <jsp:include page="/includes/style.jsp"/>
@@ -26,10 +27,15 @@
                 <section class="form-container">
                     <div class="form-box">
                         <%-- Mostrar el mensaje de éxito --%>
-                        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-                        <c:if test="${not empty mensaje}">
+                        <c:if test="${not empty mensajePublicarRevista}">
                             <div class="alert alert-success" role="alert">
-                                ${mensaje}
+                                ${mensajePublicarRevista}
+                            </div>
+                        </c:if>
+
+                        <c:if test="${not empty errorPublicarRevista}">
+                            <div class="alert alert-danger" role="alert">
+                                ${errorPublicarRevista}
                             </div>
                         </c:if>
 
@@ -75,13 +81,25 @@
                             </div>
 
 
-                            <button type="submit" class="btn btn-primary mt-3">Asignar</button>
+                            <button type="submit" class="btn btn-primary mt-3">Crear</button>
                         </form>
 
 
                         <br>   
                         <br>
                                 <div>
+                                    <!-- Mostrar mensaje de éxito o error para subir capítulo -->
+                                    <c:if test="${not empty mensajeSubirCapitulo}">
+                                        <div class="alert alert-success" role="alert">
+                                            ${mensajeSubirCapitulo}
+                                        </div>
+                                    </c:if>
+
+                                    <c:if test="${not empty errorSubirCapitulo}">
+                                        <div class="alert alert-danger" role="alert">
+                                            ${errorSubirCapitulo}
+                                        </div>
+                                    </c:if>
                                     <h3>Subir capítulo revista:</h3>
                                     <form method="POST" action="${pageContext.servletContext.contextPath}/Controllers/revistas/ver_revistas" enctype="multipart/form-data">
                                         <label for="revista" class="form-label">Seleccione revista:</label>
@@ -120,8 +138,21 @@
                         <br>
                         <br>
                         <div>
+                            <!-- Mostrar mensaje de éxito o error para habilitar funciones -->
+                            <c:if test="${not empty mensajeHabilitarFunciones}">
+                                <div class="alert alert-success" role="alert">
+                                    ${mensajeHabilitarFunciones}
+                                </div>
+                            </c:if>
+
+                            <c:if test="${not empty errorHabilitarFunciones}">
+                                <div class="alert alert-danger" role="alert">
+                                    ${errorHabilitarFunciones}
+                                </div>
+                            </c:if>
+                            
                             <h3>Habilitar comentarios, me gustas y suscripciones:</h3>
-                            <form method="GET" action="${pageContext.servletContext.contextPath}/Controllers/Anuncios/ver-activos">
+                            <form method="POST" action="${pageContext.servletContext.contextPath}/Controllers/Revista/habilitar">
                                 <label for="revista" class="form-label">Seleccione revista:</label>
                                 <select id="revista" name="revista" class="form-select" required>
                                     <c:forEach var="revista" items="${revistas}">
@@ -146,7 +177,7 @@
                                     <label for="suscripciones">Si</label>
                                 </div>
                                 <br>
-                                <button type="submit" class="btn btn-primary mt-3">Visualizar reporte</button>
+                                <button type="submit" class="btn btn-primary mt-3">Actualizar</button>
                             </form>          
                         </div>
                 </section>

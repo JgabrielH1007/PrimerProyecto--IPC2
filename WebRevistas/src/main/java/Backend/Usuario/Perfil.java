@@ -4,6 +4,8 @@
  */
 package Backend.Usuario;
 
+import java.util.Base64;
+
 /**
  *
  * @author gabrielh
@@ -67,6 +69,12 @@ public class Perfil {
         this.descripcion = descripcion;
     }
     
+    public String getFotoBase64() {
+        if (foto != null && foto.length > 0) {
+            return Base64.getEncoder().encodeToString(foto);
+        }
+        return null; // En caso de no haber imagen
+    }
     
     
 }

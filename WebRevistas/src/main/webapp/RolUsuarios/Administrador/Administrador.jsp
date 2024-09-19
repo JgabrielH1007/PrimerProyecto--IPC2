@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -28,8 +29,11 @@
                 <section class="form-container">
                     <!-- Formulario para valor anuncio -->
                     <div class="form-box">
+                        <c:if test="${not empty mensaje}">
+                            <p class="text-success">${mensaje}</p>
+                        </c:if>
                         <h3>Precio Anuncios:</h3>
-                        <form method="POST" action="${pageContext.servletContext.contextPath}/Controllers/Usuario/usuario-servlet">
+                        <form method="POST" action="${pageContext.servletContext.contextPath}/Controllers/Usuario/AsignarValorAnuncioServlet">
                             <!-- Seleccionar tipo de anuncio -->
                             <div class="form-group mb-3">
                                 <label for="tipo" class="form-label">Seleccione tipo de anuncio:</label>
@@ -60,22 +64,55 @@
                         <br>   
                         <br>
                         <div>
-                            <h3>Costos revistas:</h3>
-                            <form method="GET" action="${pageContext.servletContext.contextPath}/Controllers/revistas/ver_revistas">
+                            <h3>Costos revistas no asignado:</h3>
+                            <!-- Etiqueta para mostrar el costo global sugerido -->
+                            <p><strong>Costo sugerido:</strong> 100</p>
+                            <form method="GET" action="${pageContext.servletContext.contextPath}/Controllers/revistas/asignar_costo">
                                 <label for="revista" class="form-label">Seleccione revista:</label>
                                 <select id="revista" name="revista" class="form-select" required>
-                                    <c:forEach var="revista" items="${revistas}">
+                                    <c:forEach var="revista" items="${revistasSinCosto}">
                                         <option value="${revista}">${revista}</option>
                                     </c:forEach>
                                 </select>
 
                                 <div class="form-group mb-3">
                                     <label for="costo">Colocar costo</label>
-                                    <input id="costo" name="costo" type="number" min="1" class="form-control" required>
+                                    <!-- Campo de entrada con el valor predeterminado de 100 -->
+                                    <input id="costo" name="costo" type="number" min="1" value="100" class="form-control" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary mt-3">Asignar</button>
                             </form>
                         </div>
+
+                        <br>
+
+                        <!-- Sección para asignar costo a todas las revistas -->
+                        <div>
+                            <h2>Asignar Costo a Todas las Revistas</h2>
+
+                            <!-- Mensaje de éxito o error -->
+                            <c:if test="${not empty mensaje}">
+                                <div class="alert alert-info">${mensaje}</div>
+                            </c:if>
+
+                            <form method="GET" action="${pageContext.servletContext.contextPath}/Controllers/revistas/asignar_costo">
+                                <label for="revistas" class="form-label">Seleccione revista:</label>
+                                <select id="revistas" name="revistas" class="form-select" required>
+                                    <c:forEach var="revista" items="${todasLasRevistas}">
+                                        <option value="${revista}">${revista}</option>
+                                    </c:forEach>
+                                </select>
+
+                                <div class="form-group mt-3">
+                                    <label for="costo">Costo</label>
+                                    <!-- Campo de entrada con el valor predeterminado de 100 -->
+                                    <input id="costo" name="costo" type="number" min="1" value="100" class="form-control" required>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary mt-3">Asignar</button>
+                            </form>
+                        </div>
+
                         <br>
                         <br>
                         <div>

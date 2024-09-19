@@ -24,10 +24,25 @@ public class Revista {
     private int cantidadMegusta;
     private boolean megusta;
     private boolean comentario;
+    private boolean suscripciones;
+    private List<Capitulo> capitulos;
 
+    public boolean isSuscripciones() {
+        return suscripciones;
+    }
+
+    public void setSuscripciones(boolean suscripciones) {
+        this.suscripciones = suscripciones;
+    }
     
-    
-    
+    public List<Capitulo> getCapitulos() {
+        return capitulos;
+    }
+
+    public void setCapitulos(List<Capitulo> capitulos) {
+        this.capitulos = capitulos;
+    }
+
     public String getNombre() {
         return nombre;
     }

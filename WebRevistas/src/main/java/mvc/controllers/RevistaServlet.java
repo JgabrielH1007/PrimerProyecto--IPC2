@@ -4,6 +4,7 @@
  */
 package mvc.controllers;
 
+import Backend.DataBase.DBRevistas;
 import Backend.Exceptions.UserDataException;
 import Backend.Revista.AdministradorRevista;
 import Backend.Revista.Capitulo;
@@ -18,6 +19,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,19 +36,21 @@ import java.util.logging.Logger;
  */
 @WebServlet(name = "ControladorRevistaServlet", urlPatterns = {"/Controllers/Revista/revista-servlet"})
 public class RevistaServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Procesa la publicación de la revista
             publicarRevista(request, response);
         } catch (java.text.ParseException ex) {
+            Logger.getLogger(RevistaServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserDataException ex) {
             Logger.getLogger(RevistaServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void publicarRevista(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, java.text.ParseException {
+            throws ServletException, IOException, java.text.ParseException, UserDataException {
         System.out.println("Servlet llamado");  // Verificar si el método es alcanzado
 
         // Verifica los valores de los parámetros
@@ -67,6 +71,22 @@ public class RevistaServlet extends HttpServlet {
         // Crear el AdministradorRevista y publicar la revista
         AdministradorRevista admin = new AdministradorRevista();
         admin.publicarRevista(request);
+
+        // Obtener la sesión actual
+        HttpSession session = request.getSession(false);
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        String userName = usuario.getUserName();
+
+        // Obtener la lista actualizada de revistas
+        DBRevistas dbRevistas = new DBRevistas();
+        List<String> revistas = dbRevistas.obtenerListaDeRevistas(userName);
+        
+        // Establecer atributos de solicitud
+        request.setAttribute("revistas", revistas);
+        request.setAttribute("mensajePublicarRevista", "Revista publicada exitosamente.");
+
+        // Redirigir a la página JSP con los datos actualizados
+        request.getRequestDispatcher("/RolUsuarios/Editor/Editor.jsp").forward(request, response);
     }
 }
 

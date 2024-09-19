@@ -4,94 +4,100 @@
     Author     : gabrielh
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.List"%>
-<%@page import="Revista.Revista"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.io.InputStream"%>
 <!DOCTYPE html>
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-        <title>Suscripci√≥n</title>
+        <title>SuscripciÛn - ${revista.nombre}</title>
         <!-- Bootstrap CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-kenU1KFdBIe4zVF0sG1M5b4hcpxyD9F7jL+Z0I5q1iZn7fDaWfhp8Psr4lgv0g" crossorigin="anonymous">
-        <style>
-            .liked {
-                color: red;
-            }
-        </style>
+        <jsp:include page="/includes/resources.jsp"/>
+        <jsp:include page="/includes/style.jsp"/>
     </head>
     <body>
         <jsp:include page="/includes/Header.jsp"/>
+        <div class="layout-container container-fluid">
+            <jsp:include page="/includes/leftSide.jsp"/>
+            
+            <main>
+                <section class="section">
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-body">
+                                <label>Nombre revista:</label><h5 class="card-title">${revista.nombre}</h5>
+                                <label>Descripcion: </label><h6 class="card-subtitle mb-2 text-body-secondary">${revista.descripcion}</h6>
+                                <label>Categoria: </label><h6 class="card-subtitle mb-2 text-body-secondary">${revista.categoria}</h6>
+                                <label>Etiquetas: </label><h6 class="card-subtitle mb-2 text-body-secondary">${revista.etiquetas}</h6>
+                                <label>Autor: </label><h6 class="card-subtitle mb-2 text-body-secondary">${revista.autor}</h6>
+                                <label>Cantidad me gustas: </label><h6 class="card-subtitle mb-2 text-body-secondary">${revista.cantidadMegusta}</h6>
 
-        <!-- Contenedor de detalles de suscripci√≥n -->
-        <div class="container mt-4">
-            <h2><%= ((Revista) request.getAttribute("revista")).getNombre() %></h2>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <p><strong>Descripci√≥n:</strong> <%= ((Revista) request.getAttribute("revista")).getDescripcion() %></p>
-                    <p><strong>Categor√≠a:</strong> <%= ((Revista) request.getAttribute("revista")).getCategoria() %></p>
-                    <p><strong>Etiquetas:</strong> <%= ((Revista) request.getAttribute("revista")).getEtiquetas() %></p>
-                    <p><strong>Autor:</strong> <%= ((Revista) request.getAttribute("revista")).getAutor() %></p>
-                    <p><strong>Cantidad de Me Gusta:</strong> <span id="likesCount"><%= ((Revista) request.getAttribute("revista")).getCantidadMeGusta() %></span></p>
+                                <h5>CapÌtulos:</h5>
+                                <ul>
+                                    <c:forEach var="capitulo" items="${capitulos}">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/Controllers/revistas/descargar-pdf?nombre=${revista.nombre}&noCapitulo=${capitulo.numeroCapitulo}">
+                                                ${capitulo.nombreArchivo}
+                                            </a>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                                <c:if test="${not empty error}">
+                                    <div class="alert alert-danger">
+                                        ${error}
+                                    </div>
+                                </c:if>
 
-                    <!-- Bot√≥n Me Gusta -->
-                    <button id="likeButton" class="btn btn-primary" onclick="toggleLike()">Me gusta</button>
-                </div>
-            </div>
-
-            <!-- Apartado de Comentarios -->
-            <div class="mb-3">
-                <h3>Deja tu comentario</h3>
-                <form action="comentarRevista" method="post">
-                    <input type="hidden" name="nombre" value="<%= ((Revista) request.getAttribute("revista")).getNombre() %>">
-                    <div class="mb-3">
-                        <textarea name="comentario" class="form-control" rows="4" required></textarea>
+                                <!-- Formulario para dejar un comentario -->
+                                    <c:if test="${revista.comentario}">
+                                        <form action="${pageContext.request.contextPath}/Controllers/revistas/comentar" method="post">
+                                            <input type="hidden" name="nombreRevista" value="${revista.nombre}">
+                                            <textarea name="comentario" rows="4" cols="50" placeholder="Deja tu comentario aquÌ..."></textarea>
+                                            <button type="submit" class="btn btn-primary mt-3">Enviar Comentario</button>
+                                        </form>
+                                    </c:if>
+                                    
+                                    <!-- Formulario para Me Gusta -->
+                                    <c:if test="${revista.megusta}">
+                                        <form action="${pageContext.request.contextPath}/Controllers/revistas/me-gusta" method="post">
+                                            <input type="hidden" name="nombreRevista" value="${revista.nombre}">
+                                            <c:choose>
+                                                <c:when test="${leGusta}">
+                                                    <button type="submit" class="btn btn-danger mt-3">Ya no Me Gusta</button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button type="submit" class="btn btn-primary mt-3">Me Gusta</button>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </form>
+                                    </c:if>
+                                    <br>
+                                    <label>Autor: </label>
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">
+                                            ${revista.autor}
+                                            <!-- Enlace para ver el perfil del autor -->
+                                            <a href="${pageContext.request.contextPath}/Controllers/mostrar-perfilAutor?autor=${revista.autor}" class="btn btn-link">Ver Perfil</a>
+                                        </h6>
+                                    <br>               
+                                <!-- SecciÛn para mostrar los comentarios -->
+                                <h5>Comentarios:</h5>
+                                <ul>
+                                    <c:forEach var="comentario" items="${comentarios}">
+                                        <li>
+                                            <strong>${comentario.userName}:</strong> ${comentario.contenido}
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Enviar comentario</button>
-                </form>
-            </div>
+                </section>
+            </main>
 
-            <h3>Cap√≠tulos</h3>
-            <ul class="list-group">
-                <%
-                    List<Capitulo> capitulos = (List<Capitulo>) request.getAttribute("capitulos");
-                    if (capitulos != null && !capitulos.isEmpty()) {
-                        for (Capitulo capitulo : capitulos) {
-                %>
-                    <li class="list-group-item">
-                        <a href="<%= capitulo.getPdfUrl() %>" target="_blank"><%= capitulo.getTitulo() %></a>
-                    </li>
-                <% 
-                        }
-                    } else {
-                %>
-                    <p>No hay cap√≠tulos disponibles.</p>
-                <% 
-                    }
-                %>
-            </ul>
+            <jsp:include page="/includes/rightSide.jsp"/>
         </div>
-
-        <!-- Bootstrap JS Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-cc4d2E4pAEJz1nA5Kqa8D4p9xJwPi8/xn6Io6uy1Bh/N1zz9O+z1Xk4I5y3tmR4" crossorigin="anonymous"></script>
-        <script>
-            function toggleLike() {
-                var button = document.getElementById('likeButton');
-                var likesCount = document.getElementById('likesCount');
-                var liked = button.classList.contains('liked');
-
-                if (liked) {
-                    button.textContent = 'Me gusta';
-                    button.classList.remove('liked');
-                    likesCount.textContent = parseInt(likesCount.textContent) - 1;
-                } else {
-                    button.textContent = 'Ya no me gusta';
-                    button.classList.add('liked');
-                    likesCount.textContent = parseInt(likesCount.textContent) + 1;
-                }
-            }
-        </script>
     </body>
 </html>
+
 

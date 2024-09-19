@@ -37,13 +37,22 @@ public class ControladorServlet extends HttpServlet {
                 // Intentar crear un nuevo usuario
                 Usuario newUser = adminUsuario.crearUsuario(req); 
                 req.setAttribute("mensaje", "Usuario creado exitosamente: " + newUser.getUserName());
+    
                 if (newUser.getRol() == Roles.EDITOR) {
                     // Establece el usuario en la sesión y redirige al servlet de capítulos
                     HttpSession session = req.getSession();
                     session.setAttribute("usuario", newUser);
                     resp.sendRedirect(req.getContextPath() + "/Controllers/revistas/ver_revistas");
-                } else {
+                } else if (newUser.getRol() == Roles.SUSCRIPTOR){
                     // Maneja otros roles
+                    HttpSession session = req.getSession();
+                    session.setAttribute("usuario", newUser);
+                    req.getRequestDispatcher("/RolUsuarios/Suscriptor/Suscriptor.jsp").forward(req, resp);
+                } else if (newUser.getRol() == Roles.ADMINISTRADOR){
+                    // Maneja otros roles
+                    HttpSession session = req.getSession();
+                    session.setAttribute("usuario", newUser);
+                    resp.sendRedirect(req.getContextPath() + "/Controllers/revistas/revSinCostoServlet");
                 }
             } catch (UserDataException e) {
                 // Usuario ya existe, manejar la excepción
@@ -68,9 +77,15 @@ public class ControladorServlet extends HttpServlet {
                     if (usuario.getRol() == Roles.EDITOR) {
                         // Redirige al servlet de capítulos
                         resp.sendRedirect(req.getContextPath() + "/Controllers/revistas/ver_revistas");
-                    } else {
-                        // Maneja otros roles
-                    }
+                    }else if (usuario.getRol() == Roles.SUSCRIPTOR){
+                    // Maneja otros roles
+                    
+                    req.getRequestDispatcher("/RolUsuarios/Suscriptor/Suscriptor.jsp").forward(req, resp);
+                    }else if (usuario.getRol() == Roles.ADMINISTRADOR){
+                    // Maneja otros roles
+
+                    resp.sendRedirect(req.getContextPath() + "/Controllers/revistas/revSinCostoServlet");
+                }
                 } else {
                     // Contraseña incorrecta o usuario no encontrado
                     throw new UserDataException("Usuario o contraseña incorrectos.");

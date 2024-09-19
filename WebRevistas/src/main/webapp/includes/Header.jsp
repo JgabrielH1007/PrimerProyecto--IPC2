@@ -49,10 +49,11 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <div class="ms-auto"> <!-- Alineación a la derecha -->
-                        <li class="nav-item"><button class="btn btn-custom" type="button">Perfil</button></li>
+                    
+                        <li class="nav-item"><a  class="btn btn-custom" href="${pageContext.servletContext.contextPath}/Controllers/mostrar-perfil">Perfil</a></li>
+                       
                         <li class="nav-item"><a class="btn btn-custom" href="${pageContext.servletContext.contextPath}/Controllers/Usuario/cerrarSesion-servlet">Cerrar Sesión</a></li>
-                    </div>
+                    
                 </div>
             </div>
         </nav>

@@ -9,16 +9,17 @@ package Backend.Revista;
  * @author gabrielh
  */
 public class Capitulo {
-    private int noRevista;   
     private byte[] pdf;      
     private String nombreArchivo;
-
-    public int getNoRevista() {
-        return noRevista;
+    private String nombreRevista; // Referencia a la revista
+    private int numeroCapitulo;
+    
+    public String getNombreRevista() {
+        return nombreRevista;
     }
 
-    public void setNoRevista(int noRevista) {
-        this.noRevista = noRevista;
+    public void setNombreRevista(String nombreRevista) {
+        this.nombreRevista = nombreRevista;
     }
 
     public byte[] getPdf() {
@@ -36,6 +37,17 @@ public class Capitulo {
     public void setNombreArchivo(String nombreArchivo) {
         this.nombreArchivo = nombreArchivo;
     }
+
+    public int getNumeroCapitulo() {
+        return numeroCapitulo;
+    }
+
+    public void setNumeroCapitulo(int numeroCapitulo) {
+        this.numeroCapitulo = numeroCapitulo;
+    }
+    
+    
+    
     
     
     

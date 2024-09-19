@@ -1,0 +1,97 @@
+CREATE SCHEMA CONTROL_SISTEMA_REVISTAS;
+
+CREATE TABLE usuario (
+    user_name VARCHAR(20) NOT NULL,
+    password VARCHAR(70) NOT NULL,
+    rol VARCHAR(15) NOT NULL,
+    cartera DECIMAL(25,2) NOT NULL,
+    CONSTRAINT PK_USUARIO PRIMARY KEY (user_name)
+);
+
+CREATE TABLE perfil (
+    user_name VARCHAR(20) NOT NULL,
+    foto LONGBLOB,
+    tema_interes VARCHAR(100) NOT NULL,
+    hobbies VARCHAR(100) NOT NULL,
+    gustos VARCHAR(100) NOT NULL,
+    descripcion VARCHAR(200) NOT NULL,
+    CONSTRAINT PK_PERFIL PRIMARY KEY (user_name),
+    CONSTRAINT FK_USUARIO_IN_USER_NAMEP FOREIGN KEY (user_name) REFERENCES usuario(user_name)
+);
+
+CREATE TABLE anuncio (
+    no_anuncio INT AUTO_INCREMENT NOT NULL,
+    costo DECIMAL(15,2) NOT NULL,
+    user_name VARCHAR(20) NOT NULL,
+    tipo VARCHAR(20) NOT NULL,
+    contenido LONGBLOB NOT NULL,
+    estado BOOLEAN NOT NULL,
+    tiempo INT NOT NULL,
+    CONSTRAINT PK_NO_ANUNCIO PRIMARY KEY (no_anuncio),
+    CONSTRAINT FK_USUARIO_IN_USER_NAME FOREIGN KEY (user_name) REFERENCES usuario(user_name)
+);
+
+CREATE TABLE pago (
+    no_pago INT AUTO_INCREMENT NOT NULL,
+    user_name VARCHAR(20) NOT NULL, 
+    deuda DECIMAL(15,2) NOT NULL,
+    no_anuncio INT NOT NULL,
+    fecha DATE NOT NULL,
+    CONSTRAINT PK_PAGO PRIMARY KEY (no_pago),
+    CONSTRAINT FK_USUARIO_IN_USER_NAME FOREIGN KEY (user_name) REFERENCES usuario(user_name),
+    CONSTRAINT FK_USUARIO_IN_NO_ANUNCIO FOREIGN KEY (no_anuncio) REFERENCES anuncio(no_anuncio)
+);
+
+CREATE TABLE revista (
+    nombre VARCHAR(20) NOT NULL,
+    descripcion VARCHAR(200) NOT NULL,
+    costo_dia DECIMAL(15,2),
+    fecha DATE NOT NULL,
+    categoria VARCHAR(20) NOT NULL,
+    etiquetas VARCHAR(255),
+    autor VARCHAR(20) NOT NULL,
+    habilitar_megusta BOOLEAN NOT NULL,
+    habilitar_comentarios BOOLEAN NOT NULL,
+    habilitar_suscripciones BOOLEAN NOT NULL,
+    cantidad_megusta INT ,
+    CONSTRAINT PK_REVISTA PRIMARY KEY (nombre),
+    CONSTRAINT FK_USUARIO_IN_USER_NAME FOREIGN KEY (autor) REFERENCES usuario(user_name)
+);
+
+
+CREATE TABLE suscribir(
+    Fecha DATE NOT NULL,
+    nombre_revista VARCHAR(20) NOT NULL, 
+    user_name VARCHAR(20) NOT NULL,
+    CONSTRAINT PK_SUSCRIBIR PRIMARY KEY (nombre_revista, user_name),
+    CONSTRAINT FK_REVISTA_IN_NOMBRE FOREIGN KEY (nombre_revista) REFERENCES revista(nombre),
+    CONSTRAINT FK_USUARIO_IN_USER_NAME FOREIGN KEY (user_name) REFERENCES usuario(user_name)
+);
+
+CREATE TABLE me_gusta(
+    id INT AUTO_INCREMENT NOT NULL,
+    user_name VARCHAR(20) NOT NULL,
+    nombre_revista VARCHAR(20) NOT NULL,
+    CONSTRAINT PK_ME_GUSTA PRIMARY KEY (id),
+    CONSTRAINT FK_REVISTA_IN_NOMBRER FOREIGN KEY (nombre_revista) REFERENCES revista(nombre),
+    CONSTRAINT FK_USUARIO_IN_USER_NAMEU FOREIGN KEY (user_name) REFERENCES usuario(user_name)
+);
+
+CREATE TABLE comentario(
+    no_comentario INT AUTO_INCREMENT NOT NULL,
+    user_name VARCHAR(20) NOT NULL,
+    nombre_revista VARCHAR(20) NOT NULL,
+    contenido VARCHAR(300) NOT NULL,
+    CONSTRAINT PK_COMENTARIO PRIMARY KEY (no_comentario),
+    CONSTRAINT FK_REVISTA_IN_NOMBREE FOREIGN KEY (nombre_revista) REFERENCES revista(nombre),
+    CONSTRAINT FK_USUARIO_INUSERNAME FOREIGN KEY (user_name) REFERENCES usuario(user_name)
+);
+
+CREATE TABLE capitulo_revista(
+    no_capitulo INT AUTO_INCREMENT NOT NULL,
+    nombre_revista VARCHAR(20) NOT NULL,
+    pdf LONGBLOB NOT NULL,
+    CONSTRAINT PK_CAPITULO_REVISTA PRIMARY KEY (no_capitulo),
+    CONSTRAINT FK_REVISTA_IN_NO_REVISTA FOREIGN KEY (nombre_revista) REFERENCES revista(nombre),
+);
+
